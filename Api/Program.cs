@@ -43,19 +43,19 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
       );
 
 // Repositories
-builder.Services.AddScoped< UserManager<ApplicationUser>>();
-builder.Services.AddScoped<ICatalogContext, CatalogContext>();
-builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
-builder.Services.AddScoped<IBillRepository, BillRepository>();
-builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
-builder.Services.AddScoped<IShoppingSessionRepository, ShoppingSessionRepository>();
-builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+builder.Services.AddScoped< UserManager<ApplicationUser>>()
+    .AddScoped<ICatalogContext, CatalogContext>()
+    .AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>))
+    .AddScoped<ICategoryRepository, CategoryRepository>()
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddScoped<IProductRepository, ProductRepository>()
+    .AddScoped<IMessageRepository, MessageRepository>()
+    .AddScoped<ICartItemRepository, CartItemRepository>()
+    .AddScoped<IBillRepository, BillRepository>()
+    .AddScoped<IDiscountRepository, DiscountRepository>()
+    .AddScoped<IShoppingSessionRepository, ShoppingSessionRepository>()
+    .AddScoped<IOrderItemRepository, OrderItemRepository>()
+    .AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
 
 
 builder.Services.AddMemoryCache();

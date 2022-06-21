@@ -9,7 +9,8 @@ namespace Core.Entities
 		{
 			UserId = userId;
 		}
-		public string UserId { set; get; }
+		public string Status { set; get; } = "";
+		public string UserId { set; get; } 
 		public decimal Total { set; get; } = 0; 
 		public DateTime CreatedAt { set; get; } = DateTime.Now;
 		public DateTime ModifiedAt { set; get; } = DateTime.Now;
