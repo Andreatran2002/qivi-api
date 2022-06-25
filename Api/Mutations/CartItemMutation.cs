@@ -16,16 +16,15 @@ namespace Api.Mutations
             _logger = logger;
         }
 
-        public async Task<CartItem> CreateCartItemAsync(string productId, string userId, int quantity, string sessionId,
+        public async Task<CartItem> CreateCartItemAsync(string productId, int quantity, string sessionId,
 
             [Service] ICartItemRepository cartItemRepository, [Service] IShoppingSessionRepository sessionRepository, [Service] IUserRepository userRepository, [Service] IProductRepository productRepository, [Service] ITopicEventSender eventSender)
         {
             ShoppingSession session = await sessionRepository.GetByIdAsync(sessionId);
             Product product = await productRepository.GetByIdAsync(productId);
-            User user = await userRepository.GetByIdAsync(userId);
-            if (session == null || product == null || user == null)
+            if (session == null || product == null )
             {
-                _logger.LogError("create cart item false . Product {productId} or userId {userId} or sessionID {sessionId} does not exist  ", productId, userId, sessionId);
+                _logger.LogError("create cart item false . Product {productId}  or sessionID {sessionId} does not exist  ", productId, sessionId);
                 return null; 
             }
             var result = await cartItemRepository.InsertAsync(new CartItem(productId, quantity, sessionId));
