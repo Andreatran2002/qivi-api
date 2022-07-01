@@ -186,7 +186,8 @@ app.UseEndpoints(endpoints =>
 });
 app.MapHub<ChatHub>("/chathub");
 
-//hello
+//hello nha
+
 app.UseResponseCompression(); 
 
 app.Run();
