@@ -92,7 +92,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         builder =>
         {
-            builder.WithOrigins("https://example.com")
+            builder.WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
                 .WithMethods("GET", "POST")
                 .AllowCredentials();
@@ -155,10 +155,13 @@ builder.Services
             .AddType<UserType>()
             .AddType<ShoppingSessionType>()
             .AddType<CategoryType>()
+            .AddType<OrderDetailsType>()
+            .AddType<OrderItemType>()
             .AddType<CartItemType>()
             .AddType<CategoryResolver>()
             .AddType<ProductResolver>()
             .AddType<UserResolver>() 
+            .AddType<OrderItemResolver>() 
 
             .AddInMemorySubscriptions();
 

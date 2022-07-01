@@ -5,7 +5,9 @@ using HotChocolate.Subscriptions;
 
 namespace Api.Mutations
 {
-	public class OrderItemMutation
+    [ExtendObjectType(nameof(Mutation))]
+
+    public class OrderItemMutation
 	{
         private readonly ILogger<OrderItemMutation> _logger;
         public OrderItemMutation(ILogger<OrderItemMutation> logger)

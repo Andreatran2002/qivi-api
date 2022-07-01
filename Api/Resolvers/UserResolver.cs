@@ -18,6 +18,9 @@ namespace Api.Resolvers
 		public Task<User> GetUserByShoppingSessionAsync(
 			  [Parent] ShoppingSession shoppingSession,
 			  [Service] IUserRepository userRepository) => userRepository.GetByIdAsync(shoppingSession.UserId);
+		public Task<User> GetUserByOrderAsync(
+			  [Parent] OrderDetails order,
+			  [Service] IUserRepository userRepository) => userRepository.GetByIdAsync(order.UserId);
 
 
 	}

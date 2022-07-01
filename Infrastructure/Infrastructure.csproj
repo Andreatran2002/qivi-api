@@ -19,6 +19,8 @@
     <None Remove="Hubs\" />
     <None Remove="Ninject" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="MarkCBB.Extensions.Caching.MongoDB" />
+    <None Remove="Microsoft.Extensions.Caching.StackExchangeRedis" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configurations\" />
@@ -35,6 +37,8 @@
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="MarkCBB.Extensions.Caching.MongoDB" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.6" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
