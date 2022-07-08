@@ -16,53 +16,49 @@ namespace Api.Mutations
             _logger = logger;
         }
 
-        public async Task<CartItem> CreateCartItemAsync(string productId, int quantity, string sessionId,
+        public async Task<CartItem> CreateCartItemAsync(string priceId, int quantity, string sessionId,
 
-            [Service] ICartItemRepository cartItemRepository, [Service] IShoppingSessionRepository sessionRepository, [Service] IUserRepository userRepository, [Service] IProductRepository productRepository, [Service] ITopicEventSender eventSender)
+            [Service] ICartItemRepository cartItemRepository, [Service] IShoppingSessionRepository sessionRepository, [Service] IUserRepository userRepository, [Service] IProductPriceRepository productPriceRepository, [Service] ITopicEventSender eventSender)
         {
-            ShoppingSession session = await sessionRepository.GetByIdAsync(sessionId);
-            Product product = await productRepository.GetByIdAsync(productId);
-            if (session == null || product == null )
+            try
             {
-                _logger.LogError("create cart item false . Product {productId}  or sessionID {sessionId} does not exist  ", productId, sessionId);
-                return null; 
+                ShoppingSession session = await sessionRepository.GetByIdAsync(sessionId);
+                ProductPrice price = await productPriceRepository.GetByIdAsync(priceId);
+
+                var result = await cartItemRepository.InsertAsync(new CartItem(price.Id, quantity, sessionId));
+                session.ModifiedAt = DateTime.Now;
+                session.Total = session.Total + quantity * price.Price;
+                sessionRepository.Update(session);
+                return result;
             }
-            var result = await cartItemRepository.InsertAsync(new CartItem(productId, quantity, sessionId));
-            session.ModifiedAt = DateTime.Now;
-            session.Total = session.Total + quantity * product.Price;
-            sessionRepository.Update(session);
-            return result;
+            catch(Exception e)
+            {
+                _logger.LogError("Create cart item false . ERROR : " + e);
+                return null;
+            }
+           
         }
         public async Task<CartItem> UpdateCartItemAsync(CartItem cart,
 
             [Service] ICartItemRepository cartItemRepository, [Service] IShoppingSessionRepository sessionRepository,
-            [Service] IProductRepository productRepository, [Service] ITopicEventSender eventSender)
+            [Service] IProductPriceRepository productPriceRepository, [Service] ITopicEventSender eventSender)
         {
             try
             {
                 CartItem cartInDB = await cartItemRepository.GetByIdAsync(cart.Id);
                 ShoppingSession session = await sessionRepository.GetByIdAsync(cart.SessionId);
-                try
+               
+                var price = await productPriceRepository.GetByIdAsync(cart.PriceId);
+                if (price != null)
                 {
-                    var product = await productRepository.GetByIdAsync(cart.ProductId);
-                    if (product != null)
-                    {
-                        session.ModifiedAt = DateTime.Now;
-                        session.Total = session.Total + (cart.Quantity - cartInDB.Quantity) * product.Price;
-                        sessionRepository.Update(session);
-                        _logger.LogInformation("Update cart item {id} ", cart.Id);
-                        var result = cartItemRepository.Update(cart);
-                        return result;
-                    }
+                    session.ModifiedAt = DateTime.Now;
+                    session.Total = session.Total + (cart.Quantity - cartInDB.Quantity) * price.Price;
+                    sessionRepository.Update(session);
+                    _logger.LogInformation("Update cart item {id} ", cart.Id);
+                    var result = cartItemRepository.Update(cart);
+                    return result;
                 }
-                catch (Exception e)
-                {
-                    _logger.LogError("Update cart item {id} false . Product {productId} does not exist ", cart.Id, cart.ProductId);
-                    _logger.LogError(e.ToString());
-                    return null;
-
-                }
-
+                return null; 
 
             }
             catch (Exception e)
@@ -72,40 +68,34 @@ namespace Api.Mutations
 
                 return null;
             }
-            return null;
 
         }
         public async Task<CartItem> RemoveCartItemAsync(string id,
 
             [Service] ICartItemRepository cartItemRepository, [Service] IShoppingSessionRepository sessionRepository,
-            [Service] IProductRepository productRepository, [Service] ITopicEventSender eventSender)
+            [Service] IProductPriceRepository priceRepository, [Service] ITopicEventSender eventSender)
         {
-            var cart = await cartItemRepository.GetByIdAsync(id);
-            if (cart != null)
+            try
             {
-                var product = await productRepository.GetByIdAsync(cart.ProductId);
-                if (product != null)
-                {
-                    var result = await cartItemRepository.RemoveAsync(id);
-                    ShoppingSession session = await sessionRepository.GetByIdAsync(cart.SessionId);
+                var cart = await cartItemRepository.GetByIdAsync(id);
+                var pricce = await priceRepository.GetByIdAsync(cart.PriceId);
+                var result = await cartItemRepository.RemoveAsync(id);
+                ShoppingSession session = await sessionRepository.GetByIdAsync(cart.SessionId);
 
-                    session.ModifiedAt = DateTime.Now;
-                    session.Total = session.Total - cart.Quantity * product.Price;
-                    sessionRepository.Update(session);
-                    _logger.LogInformation("Remove cart item {id} ", id);
-                    return cart;
-                }
-                else
-                {
-                    _logger.LogError("Remove cart item {id} false . Product {productId} does not exist ", id, cart.ProductId);
-                    return null;
-                }
+                session.ModifiedAt = DateTime.Now;
+                session.Total = session.Total - cart.Quantity * pricce.Price;
+
+                sessionRepository.Update(session);
+                _logger.LogInformation("Remove cart item {id} ", id);
+                return cart;
             }
-            else
+            catch(Exception e)
             {
-                _logger.LogError("Remove cart item {id} false . Cart Item {id} does not exist ", id);
+                _logger.LogError("Remove cart item {id} false . ERROR : {error}",id, e.ToString()  );
                 return null;
             }
+            
+           
 
 
         }

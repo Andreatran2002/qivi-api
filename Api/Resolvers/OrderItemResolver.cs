@@ -4,6 +4,7 @@ using Core.Repositories;
 
 namespace Api.Resolvers
 {
+    [ExtendObjectType(nameof(OrderItemResolver))]
 	public class OrderItemResolver
 	{
 		public OrderItemResolver()

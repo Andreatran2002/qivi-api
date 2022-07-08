@@ -55,7 +55,8 @@ builder.Services.AddScoped< UserManager<ApplicationUser>>()
     .AddScoped<IDiscountRepository, DiscountRepository>()
     .AddScoped<IShoppingSessionRepository, ShoppingSessionRepository>()
     .AddScoped<IOrderItemRepository, OrderItemRepository>()
-    .AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+    .AddScoped<IOrderDetailsRepository, OrderDetailsRepository>()
+    .AddScoped<IProductPriceRepository, ProductPriceRepository>();
 
 
 builder.Services.AddMemoryCache();
@@ -133,12 +134,13 @@ builder.Services
                 .AddTypeExtension<OrderItemQuery>()
                 .AddTypeExtension<CartItemQuery>()
                 .AddTypeExtension<OrderDetailsQuery>()
+                .AddType<ProductPriceQuery>()
                 .AddTypeExtension<DiscountQuery>()
                 .AddTypeExtension<ShoppingSessionQuery>()
-                .UseAutomaticPersistedQueryPipeline()
-                .AddReadOnlyFileSystemQueryStorage("./persisted_queries")
-                .AddInMemoryQueryStorage()
-            .AddMutationType(d => d.Name(nameof(Mutation)))
+                    .UseAutomaticPersistedQueryPipeline()
+                    .AddReadOnlyFileSystemQueryStorage("./persisted_queries")
+                    .AddInMemoryQueryStorage()
+                .AddMutationType(d => d.Name(nameof(Mutation)))
                 .AddTypeExtension<BillMutation>()
                 .AddTypeExtension<DiscountMutation>()
                 .AddTypeExtension<OrderItemMutation>()
@@ -148,11 +150,13 @@ builder.Services
                 .AddTypeExtension<UserMutation>()
                 .AddTypeExtension<CartItemMutation>()
                 .AddTypeExtension<ShoppingSessionMutation>()
-            .AddSubscriptionType(d => d.Name("Subscription"))
+                .AddTypeExtension<ProductPriceMutation>()
+                .AddSubscriptionType(d => d.Name("Subscription"))
                 .AddTypeExtension<CustomerSubscription>()
             .AddType<ProductType>()
             .AddType<BillType>()
             .AddType<UserType>()
+            .AddType<ProductPriceType>()
             .AddType<ShoppingSessionType>()
             .AddType<CategoryType>()
             .AddType<OrderDetailsType>()
@@ -160,6 +164,7 @@ builder.Services
             .AddType<CartItemType>()
             .AddType<CategoryResolver>()
             .AddType<ProductResolver>()
+            .AddType<ProductPriceResolver>()
             .AddType<UserResolver>() 
             .AddType<OrderItemResolver>() 
 
@@ -186,7 +191,6 @@ app.UseEndpoints(endpoints =>
 });
 app.MapHub<ChatHub>("/chathub");
 
-//hello nha
 
 app.UseResponseCompression(); 
 

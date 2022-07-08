@@ -15,15 +15,14 @@ namespace Api.Types
             descriptor.Field(_ => _.CreatedAt);
             descriptor.Field(_ => _.ModifiedAt);
             descriptor.Field(_ => _.Name);
-            descriptor.Field(_ => _.SKU);
             descriptor.Field(_ => _.Description);
-            descriptor.Field(_ => _.Price);
             descriptor.Field(_ => _.IsEmpty);
             descriptor.Field(_ => _.Image);
 
 
             descriptor.Field<CategoryResolver>(_ => _.GetCategoryAsync(default, default));
             descriptor.Field<DiscountResolver>(_ => _.GetDiscountByProductAsync(default, default));
+            descriptor.Field<ProductPriceResolver>(_ => _.GetPricesByProductIdAsync(default, default));
         }
     }
 }

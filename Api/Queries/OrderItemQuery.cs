@@ -14,6 +14,7 @@ namespace Api.Queries
 		=> await orderItemRepository.GetByOrderId(orderId);
 		public async Task<OrderItem> GetItemById(string id, [Service] IOrderItemRepository orderItemRepository)
 		=> await orderItemRepository.GetByIdAsync(id);
+
 	}
 }
 
