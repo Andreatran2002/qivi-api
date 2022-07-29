@@ -21,6 +21,7 @@
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="MarkCBB.Extensions.Caching.MongoDB" />
     <None Remove="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <None Remove="Bogus" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configurations\" />
@@ -39,6 +40,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="MarkCBB.Extensions.Caching.MongoDB" Version="2.1.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.6" />
+    <PackageReference Include="Bogus" Version="34.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />

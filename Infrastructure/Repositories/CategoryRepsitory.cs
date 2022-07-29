@@ -23,10 +23,12 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<Category> FindByCategoryId(string id)
+        public async Task<Category> GetByCategoryId(string id)
         {
-            return await collection.Find(a => a.CategoryId == id).FirstOrDefaultAsync(); 
+            return await collection.Find(a => a.CategoryId == id).FirstOrDefaultAsync();
+
         }
+        
     }
 }
 

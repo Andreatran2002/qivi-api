@@ -11,7 +11,7 @@ namespace Api.Resolvers
 		public OrderDetailsResolver()
 		{
 		}
-		public Task<OrderDetails> GetOrderDetailsByItems(
+		public Task<OrderDetails?> GetOrderDetailsByItems(
 		  [Parent] OrderItem order,
 		  [Service] IOrderDetailsRepository orderDetailsRepository) => orderDetailsRepository.GetByIdAsync(order.OrderId);
 

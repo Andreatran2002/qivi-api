@@ -14,7 +14,7 @@ namespace Api.Queries
 			categoryRepository.GetAllAsync();
 
 		public Task<Category> GetCategoryById(string id, [Service] ICategoryRepository categoryRepository) =>
-			categoryRepository.FindByCategoryId(id);
+			categoryRepository.GetByCategoryId(id);
 	}
 }
 

@@ -19,6 +19,7 @@
     <None Remove="Microsoft.AspNetCore.SignalR" />
     <None Remove="AspNetCore.Identity.MongoDbCore" />
     <None Remove="Ninject" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -27,6 +28,7 @@
     <Folder Include="Common\" />
     <Folder Include="Common\Models\" />
     <Folder Include="Hubs\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Bson" Version="2.15.1" />

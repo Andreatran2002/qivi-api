@@ -6,7 +6,7 @@ namespace Core.Repositories
 {
 	public interface ICategoryRepository : IBaseRepository<Category>
 	{
-		public Task<Category> FindByCategoryId(string id);
+		public Task<Category> GetByCategoryId(string id);
 	}
 
 	

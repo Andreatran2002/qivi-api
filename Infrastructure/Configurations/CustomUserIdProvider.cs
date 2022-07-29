@@ -13,16 +13,6 @@ namespace Infrastructure.Configurations
         {
             _userRepository = userRepository;
         }
-        //public string GetUserId(string userName)
-        //{
-        //    // your logic to fetch a user identifier goes here.
-
-        //    // for example:
-
-        //    var userId = _userRepository.GetByIdAsync(id);
-        //    return userId.ToString();
-        //}
-
         public virtual string GetUserId(HubConnectionContext connection)
         {
             return connection.User?.FindFirst(ClaimTypes.MobilePhone)?.Value!;

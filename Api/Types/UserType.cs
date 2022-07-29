@@ -15,7 +15,7 @@ namespace Api.Types
             descriptor.Field(_ => _.FullName);
             descriptor.Field(_ => _.PhoneNumber);
 
-            //descriptor.Field<ShoppingSessionResolver>(_ => _.GetCategoryAsync(default, default));
+            descriptor.Field<UserOrderInfoResolver>(_ => _.GetUserInfoAsync(default, default));
 
 
         }

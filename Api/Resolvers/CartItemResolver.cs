@@ -11,7 +11,7 @@ namespace Api.Resolvers
 		public CartItemResolver()
 		{
 		}
-        public Task<List<CartItem>> GetCartsBySessionIdAsync(
+        public Task<List<CartItem?>> GetCartsBySessionIdAsync(
          [Parent] ShoppingSession shoppingSession,
          [Service] ICartItemRepository cartItemRepository) => cartItemRepository.GetBySessionId(shoppingSession.Id);
 	}

@@ -36,6 +36,7 @@ var mongoDbSettings = builder.Configuration.GetSection("MongoDbConfiguration").G
 
 
 // MongoIdentity
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
       .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
       (
@@ -56,7 +57,8 @@ builder.Services.AddScoped< UserManager<ApplicationUser>>()
     .AddScoped<IShoppingSessionRepository, ShoppingSessionRepository>()
     .AddScoped<IOrderItemRepository, OrderItemRepository>()
     .AddScoped<IOrderDetailsRepository, OrderDetailsRepository>()
-    .AddScoped<IProductPriceRepository, ProductPriceRepository>();
+    .AddScoped<IProductPriceRepository, ProductPriceRepository>()
+    .AddScoped<IUserOrderInfoRepository, UserOrderInfoRepository>();
 
 
 builder.Services.AddMemoryCache();
@@ -150,6 +152,7 @@ builder.Services
                 .AddTypeExtension<UserMutation>()
                 .AddTypeExtension<CartItemMutation>()
                 .AddTypeExtension<ShoppingSessionMutation>()
+                .AddTypeExtension<UserOrderInfoMutation>()
                 .AddTypeExtension<ProductPriceMutation>()
                 .AddSubscriptionType(d => d.Name("Subscription"))
                 .AddTypeExtension<CustomerSubscription>()
@@ -162,6 +165,7 @@ builder.Services
             .AddType<OrderDetailsType>()
             .AddType<OrderItemType>()
             .AddType<CartItemType>()
+            .AddType<UserOrderInfoResolver>()
             .AddType<CategoryResolver>()
             .AddType<ProductResolver>()
             .AddType<ProductPriceResolver>()

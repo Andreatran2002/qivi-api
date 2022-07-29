@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories
         public ShoppingSessionRepository(ICatalogContext catalogContext, ILogger<IShoppingSessionRepository> logger) : base(catalogContext)
         {
             _logger = logger;
-            collection = catalogContext.GetCollection<ShoppingSession>("ShoppingRepository");
+            collection = catalogContext.GetCollection<ShoppingSession>("ShoppingSession");
 
         }
 

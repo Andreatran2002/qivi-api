@@ -2,6 +2,7 @@
 using Core.Entities;
 using Infrastructure.Configurations;
 using Infrastructure.Data.Interfaces;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Infrastructure.Data
@@ -10,11 +11,12 @@ namespace Infrastructure.Data
     {
         private readonly IMongoDatabase database;
 
-        public CatalogContext(MongoDbConfiguration mongoDbConfiguration)
+        public CatalogContext(IOptions<MongoDbConfiguration> dbOptions)
         {
-            var client = new MongoClient(mongoDbConfiguration.ConnectionString);
+            var settings = dbOptions.Value;
+            var client = new MongoClient(settings.ConnectionString);
 
-            this.database = client.GetDatabase(mongoDbConfiguration.Database);
+            this.database = client.GetDatabase(settings.Database);
 
             //CatalogContextSeed.SeedData(this.database);
         }

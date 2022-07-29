@@ -25,5 +25,5 @@ namespace Api.Types
             descriptor.Field<ProductPriceResolver>(_ => _.GetPricesByProductIdAsync(default, default));
         }
     }
-}
+} 
 

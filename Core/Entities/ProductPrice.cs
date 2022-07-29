@@ -5,6 +5,10 @@ namespace Core.Entities
 {
 	public class ProductPrice : BaseEntity
 	{
+		public ProductPrice()
+        {
+
+        }
 		public ProductPrice( string sku , decimal price , string productId)
 		{
 			SKU = sku;
