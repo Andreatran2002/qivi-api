@@ -11,7 +11,13 @@ namespace Api.Queries
 		public ProductPriceQuery()
 		{
 		}
-		public Task<IEnumerable<ProductPrice>> GetPriceByProductIdAsync(string productId, [Service] IProductPriceRepository productPriceRepository) =>
+        [UsePaging(MaxPageSize = 30)]
+        [UseFiltering]
+        [UseSorting]
+        public Task<IEnumerable<ProductPrice>> GetPriceAndProductAsync([Service] IProductPriceRepository productPriceRepository) =>
+			productPriceRepository.GetAllAsync();
+
+        public Task<IEnumerable<ProductPrice>> GetPriceByProductIdAsync(string productId, [Service] IProductPriceRepository productPriceRepository) =>
 			productPriceRepository.GetByProductId(productId);
 
 		

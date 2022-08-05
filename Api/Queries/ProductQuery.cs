@@ -13,7 +13,10 @@ namespace Api.Queries
 		[UsePaging(MaxPageSize = 20)]
 		public Task<IEnumerable<Product>> GetProductsPagingAsync([Service] IProductRepository productRepository) =>
 			productRepository.GetAllAsync();
-		public Task<IEnumerable<Product>> GetProductsAsync([Service] IProductRepository productRepository) =>
+        [UsePaging(MaxPageSize = 30)]
+        [UseFiltering]
+        [UseSorting]
+        public Task<IEnumerable<Product>> GetProductsAsync([Service] IProductRepository productRepository) =>
 			productRepository.GetAllAsync();
 		public Task<Product> GetProductById(string id, [Service] IProductRepository productRepository) =>
 			productRepository.GetByIdAsync(id);
