@@ -22,7 +22,18 @@ namespace Api.Queries
 			productRepository.GetByIdAsync(id);
 		public Task<IEnumerable<Product>> GetProductByDiscountId(string id, [Service] IProductRepository productRepository) =>
 			productRepository.GetByDiscountId(id);
+        public Task<IEnumerable<Product>> GetProductByCategoryId(string id, [Service] IProductRepository productRepository) =>
+            productRepository.GetByCategoryId(id);
 
-	}
+        //     public async Task<IEnumerable<Product>> GetBestSellerProducts(  [Service] IOrderItemRepository orderItemRepository)
+        //     {
+        //var items = await orderItemRepository.GetAllAsync();
+        //var k = from item in items
+        //		group 
+
+        //     }
+
+
+    }
 }
 
