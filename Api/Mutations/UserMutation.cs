@@ -115,32 +115,37 @@ namespace Api.Mutations
             
 
         }
-        public async Task<User?> AuthenticationByPhoneNumberAsync(string phoneNumber, string password,
+        public async Task<AppResponse<User>> AuthenticationByPhoneNumberAsync(string phoneNumber, string password,
            [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender, [Service] SignInManager<ApplicationUser> signInManager, [Service] UserManager<ApplicationUser> userManager)
         {
             try
             {
                 var userByPhone = await userRepository.GetUserByPhoneNumber(phoneNumber);
+                if (userByPhone == null)
+                {
+                    return new AppResponse<User>("account-not-available");
+                }
                 var appUser = await userManager.FindByNameAsync(userByPhone.UserName);
                 SignInResult result = await signInManager.PasswordSignInAsync(appUser, password, false, false);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"Login account {phoneNumber}  successful");
-                    return userByPhone;
+                    return new AppResponse<User>(userByPhone);
+                
                 }
                 else
                 {
                     _logger.LogInformation($"Login account {phoneNumber} failure");
 
-                    return null;
+                    return new AppResponse<User>("wrong-password");
                 }
             }
             catch (Exception e)
             {
                 _logger.LogError("Authentication User Fail. ");
                 _logger.LogError(e.ToString());
-                return null;
+                return new AppResponse<User>("undefined-error");
             }
 
 

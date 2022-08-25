@@ -12,7 +12,7 @@ namespace Core.Base
             Message = message;
         }
         public T? Data { set; get; }
-        public string Message { set; get; } = "Success"; 
+        public string Message { set; get; } = "success"; 
 	}
 }
 
