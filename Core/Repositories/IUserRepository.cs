@@ -9,7 +9,9 @@ namespace Core.Repositories
 
 		public Task<User> GetUserByPhoneNumber(string phoneNumber);
 		public Task<User> GetUserByName(string name); 
-		public Task<bool> AccountInfoIsAvailable(string name, string phoneNumber); 
-	}
+		public Task<bool> AccountInfoIsAvailable(string name, string phoneNumber);
+        public  Task<List<User>?> GetPossibleUserName(string possibleUsername);
+
+    }
 }
 

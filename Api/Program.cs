@@ -32,6 +32,22 @@ builder.Services.Configure<MongoDbConfiguration>(
 
 builder.Services.AddScoped<MongoDbConfiguration>();
 var mongoDbSettings = builder.Configuration.GetSection("MongoDbConfiguration").Get<MongoDbConfiguration>();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+    //
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequiredUniqueChars = 1;
+
+
+});
 
 
 

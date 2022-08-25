@@ -25,8 +25,10 @@ namespace Infrastructure.Repositories
 			bool isNameAvailable = (await GetUserByName(name)) != null;
 			bool isPhoneNumberAvailable = (await GetUserByPhoneNumber(phoneNumber)) != null;
 
-			return (isNameAvailable && isPhoneNumberAvailable);
+			return (isNameAvailable || isPhoneNumberAvailable);
         }
+        public async Task<List<User>?> GetPossibleUserName(string possibleUsername)
+			=> await collection.Find(u => u.UserName.StartsWith(possibleUsername)).ToListAsync();
     }
 }
 

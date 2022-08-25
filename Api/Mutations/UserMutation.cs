@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using Core.Base;
 using Core.Entities;
 using Core.Repositories;
 using HotChocolate.Subscriptions;
@@ -19,43 +21,65 @@ namespace Api.Mutations
             _userManager = userManager; 
 		}
 
-        public async Task<User?> CreateUserAsync(string name, string fullName , string phoneNumber, string address, string password,
+        public async Task<AppResponse<User>> CreateUserAsync( string fullName , string phoneNumber, string address, string password,
             [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender ,[Service] UserManager<ApplicationUser> userManager)
         {
             try
             {
-                var accountAvailable = await userRepository.AccountInfoIsAvailable(name, phoneNumber);
-               
+                var account = await userRepository.GetUserByPhoneNumber( phoneNumber);
+
+                if (account == null)
+                {
                     User? result;
+                    String firstName = fullName.Split(' ')[0];
+                    String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1];
+
+                    var possibleUsername = string.Format("{0}{1}", lastName, firstName);
+
+                    var existingUsers = await userRepository.GetPossibleUserName(possibleUsername);
+
+                   if (existingUsers.Count !=0)
+                    {
+                        possibleUsername += (existingUsers.Count).ToString();
+                    }
+
+
                     ApplicationUser appUser = new ApplicationUser
                     {
-                        UserName = name,
+                        UserName = possibleUsername,
                         PhoneNumber = phoneNumber,
-
                     };
                     IdentityResult identityResult = await userManager.CreateAsync(appUser, password);
                     if (identityResult.Succeeded)
                     {
-                        _logger.LogInformation($"Create new user {name}  {phoneNumber} successful");
-                        User newUser = new User(name, fullName, phoneNumber, address);
+                        _logger.LogInformation($"Create new user {possibleUsername}  {phoneNumber} successful");
+                        User newUser = new User(possibleUsername, fullName, phoneNumber, address);
                         result = await userRepository.InsertAsync(newUser);
                         await eventSender.SendAsync(nameof(Subscriptions.CustomerSubscription.OnCreateCustomer), result);
-                        return result;
+                        return new AppResponse<User>(result);
                     }
                     else
                     {
-                        _logger.LogInformation($"Create new user {name}  {phoneNumber} failure");
-                        foreach (IdentityError error in identityResult.Errors)
-                            _logger.LogError(error.Description);
-                        return null;
-                       }
+                        _logger.LogInformation($"Create new user {possibleUsername}  {phoneNumber} failure");
 
+                        foreach (IdentityError error in identityResult.Errors)
+                        {
+                            _logger.LogError(error.Description);
+
+                        }
+                        return new AppResponse<User>("undefined-error");
+                    }
+                }
+                else
+                {
+                    return  new AppResponse<User>("account-available");
+
+                }
             }
             catch(Exception e)
             {
-                _logger.LogInformation($"Create new user {name}  {phoneNumber} failure");
-                    _logger.LogError(e.ToString());
-                return null;
+
+                return new AppResponse<User>("undefined-error");
             }
             
            
