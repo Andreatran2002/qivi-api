@@ -31,12 +31,12 @@ namespace Api.Mutations
                 if (account == null)
                 {
                     User? result;
-                    String firstName = fullName.Split(' ')[0];
-                    String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1];
+                    String firstName = fullName.Split(' ')[0].ToLower();
+                    String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1].ToLower();
 
                     var possibleUsername = string.Format("{0}{1}", lastName, firstName);
 
-                    var existingUsers = await userRepository.GetPossibleUserName(possibleUsername);
+                    var existingUsers =  userRepository.GetPossibleUserName(possibleUsername);
 
                    if (existingUsers.Count !=0)
                     {
@@ -61,13 +61,16 @@ namespace Api.Mutations
                     else
                     {
                         _logger.LogInformation($"Create new user {possibleUsername}  {phoneNumber} failure");
+                        String errors = "";
 
                         foreach (IdentityError error in identityResult.Errors)
                         {
+                            errors += error.Description; 
                             _logger.LogError(error.Description);
 
+
                         }
-                        return new AppResponse<User>("undefined-error");
+                        return new AppResponse<User>("undefined-error"+errors);
                     }
                 }
                 else
@@ -79,7 +82,7 @@ namespace Api.Mutations
             catch(Exception e)
             {
 
-                return new AppResponse<User>("undefined-error");
+                return new AppResponse<User>(e.Message);
             }
             
            

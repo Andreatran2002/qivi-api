@@ -27,8 +27,8 @@ namespace Infrastructure.Repositories
 
 			return (isNameAvailable || isPhoneNumberAvailable);
         }
-        public async Task<List<User>?> GetPossibleUserName(string possibleUsername)
-			=> await collection.Find(u => u.UserName.StartsWith(possibleUsername)).ToListAsync();
+		public List<User> GetPossibleUserName(string possibleUsername)
+			=> collection.Find(u => u.UserName.ToLower().StartsWith(possibleUsername)).ToList();
     }
 }
 
