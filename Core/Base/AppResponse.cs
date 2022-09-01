@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Core.Base
 {
-	public class AppResponse<T> where T : BaseEntity
+	public class AppResponse<T> 
 	{
 		public AppResponse(T data)
         {

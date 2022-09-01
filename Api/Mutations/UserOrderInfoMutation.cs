@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Base;
 using Core.Entities;
 using Core.Repositories;
 using HotChocolate.Subscriptions;
@@ -15,7 +16,7 @@ namespace Api.Mutations
             _logger = logger;
         }
 
-        public async Task<UserOrderInfo?> CreateUserOrderInfoAsync(string userId, string recipient, string phoneNumber, string address,
+        public async Task<AppResponse<UserOrderInfo>> CreateUserOrderInfoAsync(string userId, string recipient, string phoneNumber, string address,
             [Service] IUserOrderInfoRepository userOrderInfoRepository, [Service] ITopicEventSender eventSender, [Service] IUserRepository userRepository)
         {
             try
@@ -26,12 +27,14 @@ namespace Api.Mutations
                 {
                     _logger.LogInformation($"Create new user order info successful");
                     var orderInfo = new UserOrderInfo(userId, recipient, phoneNumber, address);
-                    return await userOrderInfoRepository.InsertAsync(orderInfo); ;
+                    var result = await userOrderInfoRepository.InsertAsync(orderInfo); 
+                    return new AppResponse<UserOrderInfo>(result);
                 }
                 else
                 {
                     _logger.LogInformation($"Create user order info failure . User is not available.UserId = {userId}",userId);
-                    return null;
+
+                    return new AppResponse<UserOrderInfo>("user-not-available");
                 }
 
             }
@@ -39,7 +42,7 @@ namespace Api.Mutations
             {
                 _logger.LogInformation($"Create user order info failure . Id : {userId}");
              
-                return null;
+                return new AppResponse<UserOrderInfo>("undefined-error") ;
             }
 
 
@@ -48,11 +51,20 @@ namespace Api.Mutations
 
         
 
-        public UserOrderInfo UpdateUserOrderInfo(UserOrderInfo info, [Service] IUserOrderInfoRepository userOrderInfoRepository, [Service] ITopicEventSender eventSender)
+        public AppResponse<UserOrderInfo> UpdateUserOrderInfo(UserOrderInfo info, [Service] IUserOrderInfoRepository userOrderInfoRepository, [Service] ITopicEventSender eventSender)
         {
+            try
+            {
             var result = userOrderInfoRepository.Update(info);
+                return new AppResponse<UserOrderInfo>(result); 
 
-            return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Update order info faile : {e} ");
+                return new AppResponse<UserOrderInfo>("undefined-error");
+            }
+
         }
     }
 }

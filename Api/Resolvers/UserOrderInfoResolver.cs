@@ -11,7 +11,7 @@ namespace Api.Resolvers
 		public UserOrderInfoResolver()
 		{
 		}
-        public Task<IEnumerable<UserOrderInfo>> GetUserInfoAsync(
+        public IEnumerable<UserOrderInfo> GetUserInfoAsync(
               [Parent] User user,
               [Service] IUserOrderInfoRepository repo) => repo.GetByUserId(user.Id);
 

@@ -154,6 +154,7 @@ builder.Services
                 .AddTypeExtension<OrderDetailsQuery>()
                 .AddType<ProductPriceQuery>()
                 .AddTypeExtension<DiscountQuery>()
+                .AddTypeExtension<UserOrderInfoQuery>()
                 .AddTypeExtension<ShoppingSessionQuery>()
                     .UseAutomaticPersistedQueryPipeline()
                     .AddReadOnlyFileSystemQueryStorage("./persisted_queries")

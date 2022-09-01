@@ -22,9 +22,10 @@ namespace Infrastructure.Repositories
         }
 
         
-        public async Task<IEnumerable<UserOrderInfo>> GetByUserId(string userId)
+        public IEnumerable<UserOrderInfo> GetByUserId(string userId)
         {
-            return await collection.Find(a => a.UserId == userId).ToListAsync();
+
+            return  collection.Find(a => a.UserId == userId).ToList();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Core.Repositories
 {
 	public interface IUserOrderInfoRepository : IBaseRepository<UserOrderInfo>
     {
-        public Task<IEnumerable<UserOrderInfo>> GetByUserId(string userId);
+        public IEnumerable<UserOrderInfo> GetByUserId(string userId);
 
     }
 }
