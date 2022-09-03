@@ -1,4 +1,6 @@
 ﻿using System;
+using AspNetCore.Identity.MongoDbCore.Models;
+
 namespace Core.Base
 {
     public interface IBaseRepository<T> where T : BaseEntity

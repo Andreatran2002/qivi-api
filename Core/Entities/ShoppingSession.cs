@@ -5,12 +5,12 @@ namespace Core.Entities
 {
 	public class ShoppingSession : BaseEntity
 	{
-		public ShoppingSession(string userId, decimal total )
+		public ShoppingSession(string userInfoId, decimal total )
 		{
-			UserId = userId;
+            UserInfoId = userInfoId;
 			Total = total;
 		}
-		public string UserId { set; get; }
+		public string UserInfoId { set; get; }
 		public decimal Total { set; get; }
 		public DateTime CreatedAt { set; get; } = DateTime.Now; 
 		public DateTime ModifiedAt { set; get; } = DateTime.Now;

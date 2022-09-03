@@ -14,10 +14,9 @@ namespace Api.Queries
 		public Task<IEnumerable<OrderDetails>> GetOrderssAsync([Service] IOrderDetailsRepository orderRepository) =>
 			orderRepository.GetAllAsync();
 
-		public Task<OrderDetails> GetOrderDetailsById(string id, [Service] IOrderDetailsRepository orderRepository) =>
-			orderRepository.GetByIdAsync(id);
-		public Task<OrderDetails> GetOrderDetailsByUserId(string id, [Service] IOrderDetailsRepository orderRepository) =>
-			orderRepository.GetByUserId(id);
+		public async Task<OrderDetails> GetOrderDetailsById(string id, [Service] IOrderDetailsRepository orderRepository) =>
+			await orderRepository.GetByIdAsync(id);
+	
 	}
 }
 

@@ -9,12 +9,12 @@ namespace Api.Types
         protected override void Configure(IObjectTypeDescriptor<ShoppingSession> descriptor)
         {
             descriptor.Field(_ => _.Id);
-            descriptor.Field(_ => _.UserId);
+            descriptor.Field(_ => _.UserInfoId);
             descriptor.Field(_ => _.Total);
             descriptor.Field(_ => _.ModifiedAt);
             descriptor.Field(_ => _.CreatedAt);
 
-            descriptor.Field<UserResolver>(_ => _.GetUserByShoppingSessionAsync(default, default));
+            descriptor.Field<UserOrderInfoResolver>(_ => _.GetUserByShoppingSessionAsync(default, default));
             descriptor.Field<CartItemResolver>(_ => _.GetCartsBySessionIdAsync(default, default));
         }
     }

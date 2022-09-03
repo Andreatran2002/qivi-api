@@ -11,17 +11,18 @@ namespace Api.Queries
 	public class UserQuery
 	{
 		[UseFiltering]
-		public async Task<IEnumerable<User>> GetUsers([Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
+		public async Task<IEnumerable<ApplicationUser>> GetUsers([Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
         {
 			var users =  await userRepository.GetAllAsync();
-			await eventSender.SendAsync("ReturnedUsers", users);
 			return users;  
 		}
 
-		public async Task<User> GetUserById(string userId,[Service]
-		IUserRepository userRepository)
-	=> await userRepository.GetByIdAsync(userId);
+		
+        public async Task<ApplicationUser> GetUserByIdAsync(string id, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
+       => await userRepository.GetByIdAsync(id);
 
+        public async Task<ApplicationUser> GetUserByPhoneAsync(string phoneNumber, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
+        => await userRepository.GetUserByPhoneNumber(phoneNumber);
 
-	}
+    }
 }

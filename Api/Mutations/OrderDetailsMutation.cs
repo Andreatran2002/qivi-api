@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Base;
 using Core.Entities;
 using Core.Repositories;
 using HotChocolate.Subscriptions;
@@ -11,37 +12,63 @@ namespace Api.Mutations
 		public OrderDetailsMutation()
 		{
 		}
-        public async Task<OrderDetails> CreateOrderDetailsAsync(string userId, 
+        public async Task<AppResponse<OrderDetails>> CreateOrderDetailsAsync(string userId, 
 
             [Service] IOrderDetailsRepository orderDetailsRepository, [Service] ITopicEventSender eventSender)
         {
-            var order = await orderDetailsRepository.GetByUserId(userId);
-            if (order == null)
+            try
             {
-                var result = await orderDetailsRepository.InsertAsync(new OrderDetails(userId));
-                return result;
+                    var result = await orderDetailsRepository.InsertAsync(new OrderDetails(userId));
+                    return new AppResponse<OrderDetails>(result);
+
             }
-            return null; 
+            catch (Exception e)
+            {
+                return new AppResponse<OrderDetails>("undefined-error");
+            }
             
 
         }
-        public async Task<OrderDetails> UpdateOrderDetailsAsync(OrderDetails order,
+        public async Task<AppResponse<OrderDetails>> UpdateOrderDetailsAsync(OrderDetails order,
 
             [Service] IOrderDetailsRepository orderDetailsRepository, [Service] ITopicEventSender eventSender)
         {
-            var orderInDB = await orderDetailsRepository.GetByIdAsync(order.Id);
-            if (orderInDB != null)
+            try
             {
-                return orderDetailsRepository.Update(order);
+                var orderInDB = await orderDetailsRepository.GetByIdAsync(order.Id);
+                if (orderInDB != null)
+                {
+                    return new AppResponse<OrderDetails>(orderDetailsRepository.Update(order));
 
+                }
+                return new AppResponse<OrderDetails>("order-details-not-available");
             }
-            return null; 
+            catch (Exception e)
+            {
+                return new AppResponse<OrderDetails>("undefined-error");
+            }
+
 
         }
-        public async Task<bool> RemoveCartItemAsync(string id,
+        public async Task<AppResponse<bool>> RemoveOrderDetailsAsync(string id,
 
-            [Service] IShoppingSessionRepository shoppingSessionRepository, [Service] ITopicEventSender eventSender)
-        => await shoppingSessionRepository.RemoveAsync(id);
+            [Service] IOrderDetailsRepository orderDetailsRepository ,[Service] ITopicEventSender eventSender)
+        {
+            try
+            {
+                var orderInDB = await orderDetailsRepository.GetByIdAsync(id);
+                if (orderInDB != null)
+                {
+                    return new AppResponse<bool>(await orderDetailsRepository.RemoveAsync(id)); 
+                }else
+                return new AppResponse<bool>(false);
+            }
+            catch (Exception e)
+            {
+                return new AppResponse<bool>("undefined-error");
+            }
+            
+        }
         
     }
 }

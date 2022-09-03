@@ -15,8 +15,8 @@ namespace Api.Queries
 
 		public Task<ShoppingSession> GetShoppingSessionById(string id, [Service] IShoppingSessionRepository shoppingRepository) =>
 			shoppingRepository.GetByIdAsync(id);
-		public Task<ShoppingSession> GetShoppingSessionByUserId(string id, [Service] IShoppingSessionRepository shoppingRepository) =>
-			shoppingRepository.GetByUserId(id);
+		public Task<List<ShoppingSession>> GetShoppingSessionByUserInfoId(string id, [Service] IShoppingSessionRepository shoppingRepository) =>
+			shoppingRepository.GetByUserInfoId(id);
 	}
 }
 

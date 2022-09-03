@@ -20,6 +20,7 @@
     <None Remove="AspNetCore.Identity.MongoDbCore" />
     <None Remove="Ninject" />
     <None Remove="Interfaces\" />
+    <None Remove="Entities\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
@@ -29,6 +30,7 @@
     <Folder Include="Common\Models\" />
     <Folder Include="Hubs\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Entities\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Bson" Version="2.15.1" />

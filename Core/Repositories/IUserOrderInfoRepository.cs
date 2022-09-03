@@ -1,7 +1,6 @@
 ﻿using System;
 using Core.Base;
 using Core.Entities;
-using Core.Interfaces;
 
 namespace Core.Repositories
 {
@@ -10,5 +9,5 @@ namespace Core.Repositories
         public IEnumerable<UserOrderInfo> GetByUserId(string userId);
 
     }
-}
+} 
 

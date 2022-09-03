@@ -5,7 +5,7 @@ namespace Core.Repositories
 {
 	public interface IOrderItemRepository : IBaseRepository<OrderItem>
 	{
-		public Task<IEnumerable<OrderItem>?> GetByOrderId(string orderId);
+		public Task<IEnumerable<OrderItem>> GetByOrderId(string orderId);
 
 	}
 }

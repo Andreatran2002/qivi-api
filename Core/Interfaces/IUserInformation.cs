@@ -1,11 +1,11 @@
-﻿using System;
-using Core.Entities;
+﻿//using System;
+//using Core.Entities;
 
-namespace Core.Interfaces
-{
-	public interface IUserInformation
-	{
-        public Task<User> GetUserById(string userId);
-    }
-}
+//namespace Core.Interfaces
+//{
+//	public interface IUserInformation
+//	{
+//        public Task<User> GetUserById(string userId);
+//    }
+//}
 

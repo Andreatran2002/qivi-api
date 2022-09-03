@@ -13,15 +13,13 @@ namespace Api.Mutations
     public class UserMutation
 	{
 
-        private UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<IBillRepository> _logger;
-        public UserMutation(UserManager<ApplicationUser> userManager, ILogger<IBillRepository> logger)
+        private readonly ILogger<IUserRepository> _logger;
+        public UserMutation( ILogger<IUserRepository> logger)
 		{
             _logger = logger; 
-            _userManager = userManager; 
 		}
 
-        public async Task<AppResponse<User>> CreateUserAsync( string fullName , string phoneNumber, string address, string password,
+        public async Task<AppResponse<ApplicationUser>> CreateUserAsync( string fullName , string phoneNumber, string address, string password,
             [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender ,[Service] UserManager<ApplicationUser> userManager)
         {
             try
@@ -30,7 +28,6 @@ namespace Api.Mutations
 
                 if (account == null)
                 {
-                    User? result;
                     String firstName = fullName.Split(' ')[0].ToLower();
                     String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1].ToLower();
 
@@ -53,10 +50,7 @@ namespace Api.Mutations
                     if (identityResult.Succeeded)
                     {
                         _logger.LogInformation($"Create new user {possibleUsername}  {phoneNumber} successful");
-                        User newUser = new User(possibleUsername, fullName, phoneNumber, address);
-                        result = await userRepository.InsertAsync(newUser);
-                        await eventSender.SendAsync(nameof(Subscriptions.CustomerSubscription.OnCreateCustomer), result);
-                        return new AppResponse<User>(result);
+                        return new AppResponse<ApplicationUser>(appUser);
                     }
                     else
                     {
@@ -70,26 +64,26 @@ namespace Api.Mutations
 
 
                         }
-                        return new AppResponse<User>("undefined-error"+errors);
+                        return new AppResponse<ApplicationUser>("undefined-error"+errors);
                     }
                 }
                 else
                 {
-                    return  new AppResponse<User>("account-available");
+                    return  new AppResponse<ApplicationUser>("account-available");
 
                 }
             }
             catch(Exception e)
             {
 
-                return new AppResponse<User>(e.Message);
+                return new AppResponse<ApplicationUser>(e.Message);
             }
             
            
         }
 
 
-        public async Task<User?> AuthenticationUserAsync(string name, string password, 
+        public async Task<ApplicationUser?> AuthenticationUserAsync(string name, string password, 
            [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender,[Service] SignInManager<ApplicationUser> signInManager, [Service] UserManager<ApplicationUser> userManager)
         {
             try
@@ -118,7 +112,7 @@ namespace Api.Mutations
             
 
         }
-        public async Task<AppResponse<User>> AuthenticationByPhoneNumberAsync(string phoneNumber, string password,
+        public async Task<AppResponse<ApplicationUser>> AuthenticationByPhoneNumberAsync(string phoneNumber, string password,
            [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender, [Service] SignInManager<ApplicationUser> signInManager, [Service] UserManager<ApplicationUser> userManager)
         {
             try
@@ -126,7 +120,7 @@ namespace Api.Mutations
                 var userByPhone = await userRepository.GetUserByPhoneNumber(phoneNumber);
                 if (userByPhone == null)
                 {
-                    return new AppResponse<User>("account-not-available");
+                    return new AppResponse<ApplicationUser>("account-not-available");
                 }
                 var appUser = await userManager.FindByNameAsync(userByPhone.UserName);
                 SignInResult result = await signInManager.PasswordSignInAsync(appUser, password, false, false);
@@ -134,54 +128,72 @@ namespace Api.Mutations
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"Login account {phoneNumber}  successful");
-                    return new AppResponse<User>(userByPhone);
+                    return new AppResponse<ApplicationUser>(userByPhone);
                 
                 }
                 else
                 {
                     _logger.LogInformation($"Login account {phoneNumber} failure");
 
-                    return new AppResponse<User>("wrong-password");
+                    return new AppResponse<ApplicationUser>("wrong-password");
                 }
             }
             catch (Exception e)
             {
                 _logger.LogError("Authentication User Fail. ");
                 _logger.LogError(e.ToString());
-                return new AppResponse<User>("undefined-error");
+                return new AppResponse<ApplicationUser>("undefined-error");
             }
 
 
         }
 
 
-        public User UpdateUser(User user,  [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
+        public async Task<AppResponse<bool>> ChangePassword(string id , string password, [Service] UserManager<ApplicationUser> userManager,  [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
         {
-            var result =  userRepository.Update(user);
-
-            if (result != null)
+            try
             {
-                //await eventSender.SendAsync(nameof(Subscriptions.ProductSubscriptions.OnRemoveAsync), id);
-            }
+                var user = await userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    return new AppResponse<bool>("user-not-available");
+                }
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-            return result;
-        }
-        public async Task<bool> RemoveUserAsync(string id, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
-        {
-            var result = await userRepository.RemoveAsync(id);
-
-            if (result)
+                var result = await userManager.ResetPasswordAsync(user, token, password);
+                if (result.Succeeded)
+                {
+                    return new AppResponse<bool>(true);
+                }
+                else return new AppResponse<bool>(false); 
+            }catch(Exception e)
             {
-                //await eventSender.SendAsync(nameof(Subscriptions.ProductSubscriptions.OnRemoveAsync), id);
+                return new AppResponse<bool>("undefined-error");
             }
-
-            return result;
+            
         }
-        public async Task<User> GetUserByIdAsync(string id, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
-        =>  await userRepository.GetByIdAsync(id);
-
-        public async Task<User> GetUserByPhoneAsync(string phoneNumber, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
-        => await userRepository.GetUserByPhoneNumber(phoneNumber);
+        //public async Task<AppResponse<bool>> LockUser(string id, [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender)
+        //{
+        //    try
+        //    {
+        //        var user = await _userManager.FindByIdAsync(id);
+        //        if (user == null)
+        //        {
+        //            return new AppResponse<bool>("user-not-available");
+        //        }
+        //        _
+        //        if (result.Succeeded)
+        //        {
+        //            return new AppResponse<bool>(true);
+        //        }
+        //        else return new AppResponse<bool>(false);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new AppResponse<bool>("undefined-error");
+        //    }
+        //}
+       
 
     }
 }

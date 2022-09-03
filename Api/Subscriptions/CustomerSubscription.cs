@@ -10,15 +10,15 @@ namespace Api.Subscriptions
 	public class CustomerSubscription
 	{
 		[Subscribe]
-		public User OnCreateCustomer([EventMessage] User user) => user;
+		public ApplicationUser OnCreateCustomer([EventMessage] ApplicationUser user) => user;
         [SubscribeAndResolve]
         public async ValueTask<ISourceStream
-        <List<User>>> OnUsersGet([Service]
+        <List<ApplicationUser>>> OnUsersGet([Service]
         ITopicEventReceiver eventReceiver,
            CancellationToken cancellationToken)
         {
             return await eventReceiver.SubscribeAsync<string,
-            List<User>>("ReturnedUsers",
+            List<ApplicationUser>>("ReturnedUsers",
             cancellationToken);
         }
     }
