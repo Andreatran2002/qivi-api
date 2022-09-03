@@ -12,13 +12,13 @@ namespace Api.Mutations
 		public OrderDetailsMutation()
 		{
 		}
-        public async Task<AppResponse<OrderDetails>> CreateOrderDetailsAsync(string userId, 
+        public async Task<AppResponse<OrderDetails>> CreateOrderDetailsAsync(string userId,string userInfoId,
 
             [Service] IOrderDetailsRepository orderDetailsRepository, [Service] ITopicEventSender eventSender)
         {
             try
             {
-                    var result = await orderDetailsRepository.InsertAsync(new OrderDetails(userId));
+                    var result = await orderDetailsRepository.InsertAsync(new OrderDetails(userInfoId,userId));
                     return new AppResponse<OrderDetails>(result);
 
             }

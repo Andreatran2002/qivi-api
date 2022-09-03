@@ -6,7 +6,7 @@ namespace Core.Repositories
 {
 	public interface IShoppingSessionRepository : IBaseRepository<ShoppingSession>
 	{
-        public Task<List<ShoppingSession>> GetByUserInfoId(string userId);
+        public Task<ShoppingSession> GetByUserId(string userId);
 
     }
 }

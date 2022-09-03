@@ -28,8 +28,8 @@ namespace Api.Mutations
 
                 if (account == null)
                 {
-                    String firstName = fullName.Split(' ')[0].ToLower();
-                    String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1].ToLower();
+                    string firstName = fullName.Split(' ')[0].ToLower();
+                    string lastName = fullName.Split(' ')[fullName.Split(' ').Length-1].ToLower();
 
                     var possibleUsername = string.Format("{0}{1}", lastName, firstName);
 

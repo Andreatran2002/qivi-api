@@ -51,7 +51,6 @@
     <None Remove="GraphQL.Server.Ui.Playground" />
     <None Remove="Mutation\" />
     <None Remove="Subscriptions\" />
-    <None Remove="Types\SortingsType\" />
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
@@ -69,7 +68,6 @@
     <Folder Include="Resolvers\" />
     <Folder Include="Mutations\" />
     <Folder Include="Subscriptions\" />
-    <Folder Include="Types\SortingsType\" />
     <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>

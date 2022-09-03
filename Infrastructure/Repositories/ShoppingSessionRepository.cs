@@ -21,9 +21,9 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<List<ShoppingSession>> GetByUserInfoId(string userInfoId)
+        public async Task<ShoppingSession> GetByUserId(string userId)
         {
-            return await collection.Find(a => a.UserInfoId == userInfoId).ToListAsync(); 
+            return await collection.Find(a => a.UserId == userId).FirstOrDefaultAsync(); 
         }
     }
 }

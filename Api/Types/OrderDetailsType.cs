@@ -13,7 +13,9 @@ namespace Api.Types
             descriptor.Field(_ => _.ModifiedAt);
             descriptor.Field(_ => _.Total);
             descriptor.Field(_ => _.UserInfoId);
+            descriptor.Field(_ => _.UserId);
             descriptor.Field<UserOrderInfoResolver>(_ => _.GetUserByOrderAsync(default, default));
+            descriptor.Field<UserResolver>(_ => _.GetUserByOrderAsync(default, default));
             descriptor.Field<OrderItemResolver>(_ => _.GetOrderItemsByID(default, default));
             
         }

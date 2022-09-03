@@ -33,6 +33,8 @@ namespace Api.Types
             descriptor.Field(_ => _.Version);
 
             descriptor.Field<UserOrderInfoResolver>(_ => _.GetUserInfo(default, default));
+            descriptor.Field<ShoppingSessionResolver>(_ => _.GetShoppingSessionByUserAsync(default, default));
+            descriptor.Field<OrderDetailsResolver>(_ => _.GetOrderDetailsByUserId(default, default));
 
 
         }
