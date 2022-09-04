@@ -11,13 +11,13 @@ namespace Infrastructure.Repositories
 	public class UserOrderInfoRepository : BaseRepository<UserOrderInfo>,  IUserOrderInfoRepository
     {
         private readonly ILogger<IUserOrderInfoRepository> _logger;
-        private readonly IMongoCollection<UserOrderInfo> collection;
+        private readonly IMongoCollection<UserOrderInfo> _collection;
 
 
         public UserOrderInfoRepository(ICatalogContext catalogContext, ILogger<IUserOrderInfoRepository> logger) : base(catalogContext)
         {
             _logger = logger;
-            collection = catalogContext.GetCollection<UserOrderInfo>("UserOrderInfo");
+            _collection = catalogContext.GetCollection<UserOrderInfo>("UserOrderInfo");
 
         }
 
@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
         public IEnumerable<UserOrderInfo> GetByUserId(string userId)
         {
 
-            return  collection.Find(a => a.UserId == userId).ToList();
+            return  _collection.Find(a => a.UserId == userId).ToList();
         }
     }
 }

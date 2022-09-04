@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Core.Base;
 using Infrastructure.Data.Interfaces;
 using MongoDB.Driver;

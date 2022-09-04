@@ -168,8 +168,6 @@ builder.Services
                 .AddTypeExtension<ShoppingSessionMutation>()
                 .AddTypeExtension<UserOrderInfoMutation>()
                 .AddTypeExtension<ProductPriceMutation>()
-                .AddSubscriptionType(d => d.Name("Subscription"))
-                .AddTypeExtension<CustomerSubscription>()
             .AddType<ProductType>()
             .AddType<UserOrderInfoType>()
             .AddType<UserType>()

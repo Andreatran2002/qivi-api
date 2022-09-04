@@ -5,9 +5,9 @@ namespace Core.Entities
 {
 	public class ShoppingSession : BaseEntity
 	{
-		public ShoppingSession(string userInfoId, decimal total )
+		public ShoppingSession(string userId, decimal total )
 		{
-            UserId = userInfoId;
+            UserId = userId;
 			Total = total;
 		}
 		public string UserId { set; get; }

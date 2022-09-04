@@ -38,7 +38,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="vng.zalo.ZaloDotNetSDK" Version="1.1.9" />
   </ItemGroup>
 
   <ItemGroup>
