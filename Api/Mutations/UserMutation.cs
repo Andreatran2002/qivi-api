@@ -21,7 +21,7 @@ namespace Api.Mutations
             _userManager = userManager; 
 		}
 
-        public async Task<AppResponse<User>> CreateUserAsync( string fullName , string phoneNumber, string address, string password,
+        public async Task<AppResponse<User>> CreateUserAsync( string firstName,string lastName , string phoneNumber, string password,
             [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender ,[Service] UserManager<ApplicationUser> userManager)
         {
             try
@@ -31,8 +31,6 @@ namespace Api.Mutations
                 if (account == null)
                 {
                     User? result;
-                    String firstName = fullName.Split(' ')[0].ToLower();
-                    String lastName = fullName.Split(' ')[fullName.Split(' ').Length-1].ToLower();
 
                     var possibleUsername = string.Format("{0}{1}", lastName, firstName);
 
@@ -53,7 +51,7 @@ namespace Api.Mutations
                     if (identityResult.Succeeded)
                     {
                         _logger.LogInformation($"Create new user {possibleUsername}  {phoneNumber} successful");
-                        User newUser = new User(possibleUsername, fullName, phoneNumber, address);
+                        User newUser = new User(possibleUsername, firstName, lastName, phoneNumber);
                         result = await userRepository.InsertAsync(newUser);
                         await eventSender.SendAsync(nameof(Subscriptions.CustomerSubscription.OnCreateCustomer), result);
                         return new AppResponse<User>(result);
@@ -89,12 +87,16 @@ namespace Api.Mutations
         }
 
 
-        public async Task<User?> AuthenticationUserAsync(string name, string password, 
+        public async Task<User?> AuthenticationByUserNameAsync(string name, string password, 
            [Service] IUserRepository userRepository, [Service] ITopicEventSender eventSender,[Service] SignInManager<ApplicationUser> signInManager, [Service] UserManager<ApplicationUser> userManager)
         {
             try
             {
                 var appUser = await userManager.FindByNameAsync(name);
+                //if (appUser == null)
+                //{
+                //    return 
+                //}
                 SignInResult result = await signInManager.PasswordSignInAsync(appUser, password, false, false);
 
                 if (result.Succeeded)

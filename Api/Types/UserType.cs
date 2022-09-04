@@ -11,8 +11,8 @@ namespace Api.Types
         {
             descriptor.Field(_ => _.Id);
             descriptor.Field(_ => _.UserName);
-            descriptor.Field(_ => _.Address);
-            descriptor.Field(_ => _.FullName);
+            descriptor.Field(_ => _.FirstName);
+            descriptor.Field(_ => _.LastName);
             descriptor.Field(_ => _.PhoneNumber);
 
             descriptor.Field<UserOrderInfoResolver>(_ => _.GetUserInfoAsync(default, default));

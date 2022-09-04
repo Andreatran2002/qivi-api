@@ -10,7 +10,7 @@ namespace Api.Resolvers
 		public OrderItemResolver()
 		{
 		}
-		public Task<IEnumerable<OrderItem>?> GetOrderItemsByID(
+		public Task<IEnumerable<OrderItem>> GetOrderItemsByID(
 		 [Parent] OrderDetails order,
 		 [Service] IOrderItemRepository orderItemRepository) => orderItemRepository.GetByOrderId(order.Id);
 	}

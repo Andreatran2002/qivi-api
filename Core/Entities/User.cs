@@ -9,17 +9,17 @@ namespace Core.Entities
         {
 
         }
-		public User(string name,string fullName,string phoneNumber, string address)
+		public User(string name,string firstName, string lastName,string phoneNumber)
 		{
 			UserName = name;
-			FullName = fullName; 
+			FirstName = firstName;
+			LastName = lastName; 
 			PhoneNumber = phoneNumber;
-			Address = address; 
 		}
 		public string UserName { set; get; }
-		public string FullName { set; get; }
+		public string FirstName { set; get; }
+		public string LastName { set; get; }
 		public string PhoneNumber { set; get; }
-		public string Address { set; get; }
 
 		
 	}
